@@ -1,6 +1,6 @@
 name: pre_commit
 description: pre_commit script to automate tedious tasks in dart projects
-version: 0.0.1
+version: 0.0.2
 homepage: https://www.github.com/devkabiir/pre_commit
 author: Dinesh Ahuja <dev@kabiir.me>
 documentation:

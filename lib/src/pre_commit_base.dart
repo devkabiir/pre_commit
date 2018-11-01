@@ -1,6 +1,9 @@
 // pre_commit, Copyright (C) 2018 Dinesh Ahuja <dev@kabiir.me>.
 // See the included LICENSE file for more info.
 
+// TODO(devkabiir): auto create screenshots for all routes (`flutter run --route` can run a specific route), https://github.com/devkabiir/flutter_advanced_template/issues/3
+// TODO(devkabiir): check for commit message, https://github.com/devkabiir/flutter_advanced_template/issues/4
+
 import 'dart:io';
 
 import 'package:find_config/find_config.dart';
@@ -41,7 +44,10 @@ Map<String, List<String>> get _cmds {
 
 /// Runs tedious tasks for a dart based project in the given [workingDirectory],
 /// defaults to current working directory
-void preCommit({String workingDirectory}) async {
+///
+/// returns exit code 0 if all [_cmds] where successful, exit code of those
+/// cmds otherwise
+int preCommit({String workingDirectory}) {
   // ignore: parameter_assignments
   workingDirectory = workingDirectory ?? _cwd;
 
@@ -71,10 +77,10 @@ void preCommit({String workingDirectory}) async {
       print('Failed $cmd with exit code: ${process.exitCode}');
 
       print('Please fix all of the issues before commiting your changes!');
-      exit(process.exitCode);
+      return process.exitCode;
     }
   }
 
   print('Everything looks fine, you can commit the changes!');
-  exit(0);
+  return 0;
 }
