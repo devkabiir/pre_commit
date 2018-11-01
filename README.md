@@ -95,10 +95,7 @@ Please file feature requests and bugs at the [issue-tracker].
 
 ## License
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+Copyright (C) 2018 Dinesh Ahuja <dev@kabiir.me>
 
 Please see the [LICENSE] file in this repository for the full text
 
