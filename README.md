@@ -1,4 +1,4 @@
-# Find config
+# Pre-Commit
 
 [![License](https://img.shields.io/github/license/devkabiir/pre_commit.svg)][LICENSE]
 [![Travis build](https://img.shields.io/travis/com/devkabiir/pre_commit.svg)][repo]
