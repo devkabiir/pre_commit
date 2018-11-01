@@ -1,0 +1,22 @@
+name: pre_commit
+description: pre_commit script to automate tedious tasks in dart projects
+version: 0.0.1
+homepage: https://www.github.com/devkabiir/pre_commit
+author: Dinesh Ahuja <dev@kabiir.me>
+documentation:
+
+environment:
+  sdk: '>=2.0.0 <3.0.0'
+
+executables:
+  pre_commit:
+
+dependencies:
+  find_config:
+    git: https://www.github.com/devkabiir/find_config
+  travis_ci:
+    git: https://www.github.com/devkabiir/travis_ci
+  yaml: any
+
+dev_dependencies:
+  test: ^1.0.0
