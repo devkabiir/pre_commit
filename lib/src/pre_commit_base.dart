@@ -1,8 +1,8 @@
 // pre_commit, Copyright (C) 2018 Dinesh Ahuja <dev@kabiir.me>.
 // See the included LICENSE file for more info.
 
-// TODO(devkabiir): auto create screenshots for all routes (`flutter run --route` can run a specific route), https://github.com/devkabiir/flutter_advanced_template/issues/3
-// TODO(devkabiir): check for commit message, https://github.com/devkabiir/flutter_advanced_template/issues/4
+// TODO(devkabiir): auto create screenshots for all routes (`flutter run --route` can run a specific route), https://github.com/devkabiir/pre_commit/issues/2
+// TODO(devkabiir): check for commit message, https://github.com/devkabiir/pre_commit/issues/1
 
 import 'dart:io';
 
