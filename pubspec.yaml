@@ -16,7 +16,8 @@ dependencies:
     git: https://www.github.com/devkabiir/find_config
   travis_ci:
     git: https://www.github.com/devkabiir/travis_ci
-  yaml: any
+  yaml: ^2.0.0
+  path: ^1.0.0
 
 dev_dependencies:
   test: ^1.0.0
