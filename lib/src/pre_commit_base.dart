@@ -24,7 +24,7 @@ final _scriptName =
 
 final _scriptPath = Platform.script.toFilePath(windows: Platform.isWindows);
 
-Map<String, List<String>> get _cmds {
+Map<String, List<String>> get _tasks {
   final Map deps = loadYaml(pubspec?.readAsStringSync())['dependencies'];
   final isFlutterProject = deps?.containsKey('flutter') ?? false;
 
@@ -51,9 +51,10 @@ Map<String, List<String>> get _cmds {
 /// Runs tedious tasks for a dart based project in the given [workingDirectory],
 /// defaults to current working directory
 ///
-/// returns exit code 0 if all [_cmds] where successful, exit code of those
+/// returns exit code 0 if all [_tasks] where successful, exit code of those
 /// cmds otherwise
-int preCommit({String workingDirectory}) {
+int preCommit([int taskId, String workingDirectory]) {
+  taskId ??= -1;
   // ignore: parameter_assignments
   workingDirectory = workingDirectory ?? _cwd;
 
@@ -64,29 +65,53 @@ int preCommit({String workingDirectory}) {
   print('Is CI: ${travis.isCi}');
   print('\n'.padLeft(81, '#'));
 
-  final cmds = _cmds;
+  final tasks = _tasks;
 
-  for (var cmd in cmds.keys) {
-    print('Running "$cmd ${cmds[cmd].join(' ')}"');
+  if (taskId == -1) {
+    for (var task in tasks.keys) {
+      final exitCode = runTask(task, tasks[task], workingDirectory);
 
-    final process = Process.runSync(
-      cmd,
-      cmds[cmd],
-      runInShell: Platform.isWindows,
-      workingDirectory: workingDirectory,
-    );
-
-    print(process.stdout);
-    print(process.stderr);
-
-    if (process.exitCode != 0) {
-      print('Failed $cmd with exit code: ${process.exitCode}');
-
-      print('Please fix all of the issues before commiting your changes!');
-      return process.exitCode;
+      if (exitCode != 0) {
+        break;
+      }
     }
+  } else {
+    final cmd = tasks.keys.elementAt(taskId);
+    final args = tasks[cmd];
+
+    exitCode = runTask(cmd, args, workingDirectory);
   }
 
-  print('Everything looks fine, you can commit the changes!');
-  return 0;
+  if (exitCode == 0) {
+    print('Everything looks fine, you can commit the changes!');
+  }
+
+  return exitCode;
+}
+
+/// Run a task
+int runTask(String cmd, List<String> args, String workingDirectory) {
+  print('Running "$cmd ${args.join(' ')}"');
+
+  final pr = Process.runSync(
+    cmd,
+    args,
+    runInShell: Platform.isWindows,
+    workingDirectory: workingDirectory,
+  );
+
+  if (pr.stdout.toString().isNotEmpty) {
+    print(pr.stdout);
+  }
+  if (pr.stderr.toString().isNotEmpty) {
+    print(pr.stderr);
+  }
+
+  if (pr.exitCode != 0) {
+    print('Failed $cmd with exit code: ${pr.exitCode}');
+
+    print('Please fix all of the issues before commiting your changes!');
+  }
+
+  return pr.exitCode;
 }
