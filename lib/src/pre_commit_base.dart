@@ -7,8 +7,15 @@
 import 'dart:io';
 
 import 'package:find_config/find_config.dart';
+import 'package:path/path.dart' as p;
 import 'package:travis_ci/travis_ci.dart' as travis;
 import 'package:yaml/yaml.dart';
+
+/// Pubspec file handle
+final File pubspec = findConfig('pubspec.yaml');
+
+/// Pubspec as a map
+final YamlMap pubspecYaml = loadYaml(pubspec?.readAsStringSync());
 
 final _cwd = Directory.current.path;
 
@@ -18,22 +25,21 @@ final _scriptName =
 final _scriptPath = Platform.script.toFilePath(windows: Platform.isWindows);
 
 Map<String, List<String>> get _cmds {
-  final pubspec = findConfig('pubspec.yaml')?.readAsStringSync();
-  final Map deps = loadYaml(pubspec)['dependencies'];
+  final Map deps = loadYaml(pubspec?.readAsStringSync())['dependencies'];
   final isFlutterProject = deps?.containsKey('flutter') ?? false;
 
   return {
     'dartfmt': [
       '-n',
       '--set-exit-if-changed',
-      '$_cwd${Platform.pathSeparator}lib',
-      '$_cwd${Platform.pathSeparator}test'
+      p.join(_cwd, 'lib'),
+      p.join(_cwd, 'test'),
     ],
     'dartanalyzer': [
       '--fatal-warnings',
       '--fatal-lints',
-      '$_cwd${Platform.pathSeparator}lib',
-      '$_cwd${Platform.pathSeparator}test'
+      p.join(_cwd, 'lib'),
+      p.join(_cwd, 'test'),
     ],
   }..addEntries([
       isFlutterProject
