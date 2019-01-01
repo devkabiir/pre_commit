@@ -69,7 +69,7 @@ int preCommit([int taskId, String workingDirectory]) {
 
   if (taskId == -1) {
     for (var task in tasks.keys) {
-      final exitCode = runTask(task, tasks[task], workingDirectory);
+      exitCode = runTask(task, tasks[task], workingDirectory);
 
       if (exitCode != 0) {
         break;
